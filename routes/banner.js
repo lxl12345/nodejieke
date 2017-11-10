@@ -53,7 +53,12 @@ router.post('/img', function(req, res) {
 
 		}
 		con.query(`INSERT INTO banner (img) VALUES ('upload/${fName}')`, function(err, rows) {
-
+			if (rows!=""||rows!=null) {
+				con.query('SELECT* FROM banner', function(err, rows, fields) {
+					console.log(rows)
+					res.send(rows)
+				});
+			} 
 		})
 
 	});
@@ -76,10 +81,10 @@ router.post('/detail', function(req, res, next) {
 
 router.post('/search', function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', "*")
- 	var sum=req.body.sea;
- 	con.query(`SELECT * FROM banner WHERE id LIKE '%${sum}%' OR img LIKE '%${sum}%'`,function(err,rows,fields){
- 		res.send(rows)
- 	})
+   	var sum=req.body.sea;
+   	con.query(`SELECT * FROM banner WHERE id LIKE '%${sum}%' OR img LIKE '%${sum}%'`,function(err,rows,fields){
+   		res.send(rows)
+   	})
 });
 //修改
 router.post('/updata', function(req, res, next) {
@@ -95,6 +100,13 @@ router.post('/updata', function(req, res, next) {
    	})
 });
 
-
+//删除
+router.post('/del',function(req,res,next){
+	res.header('Access-Control-Allow-Origin', "*")
+	var id=req.body.id;
+	con.query(`DELETE FROM banner WHERE id='${id}'`, function(err, rows, fields) {
+		res.send('删除成功')
+	})
+})
 
 module.exports = router;

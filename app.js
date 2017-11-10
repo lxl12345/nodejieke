@@ -10,6 +10,8 @@ var users = require('./routes/users');
 var banner = require('./routes/banner');
 var tupian = require('./routes/tupian');
 var modul = require('./routes/modul');
+var partner = require('./routes/partner');
+var server = require('./routes/server');
 
 
 var app = express();
@@ -31,6 +33,9 @@ app.use('/users', users);
 app.use('/banner', banner);
 app.use('/tupian', tupian);
 app.use('/modul', modul);
+app.use('/partner', partner);
+app.use('/server', server);
+
 
 
 

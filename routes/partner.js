@@ -49,12 +49,10 @@ router.post('/img', function(req, res) {
 			fs.renameSync(file.path, newPath);
 			//接受两个参数  第一个是原有的图片的路径
 			//         第二个是新路径
-			res.send(newPath)
+			res.send('upload/'+fName)
 
 		}
-		con.query(`INSERT INTO partner (img) VALUES ('upload/${fName}')`, function(err, rows) {
-
-		})
+		
 
 	});
 
@@ -65,11 +63,21 @@ router.post('/photo', function(req, res) {
 		res.send(rows);
 	})
 })
+//获取表单里的详情
+router.post('/detail', function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', "*")
+	var id_two=req.body.id_two
+	con.query(`SELECT * FROM partner id='${id_two}'`, function(err, rows, fields) {
+		res.send(rows)
+	})
+});
 router.post('/insert', function(req, res, next) {
 	var a = req.body.a;
 	var b = req.body.b;
+	var c = req.body.c;
+	var d = req.body.d;
 	res.header('Access-Control-Allow-Origin', "*")
-	con.query(`INSERT INTO tupain (title,sub_title) VALUES ('${a}','${b}')`, function(err, rows, fields) {
+	con.query(`INSERT INTO partner (img,name,work,content) VALUES ('${c}','${a}','${b}','${d}')`, function(err, rows, fields) {
 		if (rows!=""||rows!=null) {
 			con.query('SELECT * FROM partner', function(err, rows, fields) {
 				res.send(rows)
@@ -85,13 +93,13 @@ router.post('/del',function(req,res,next){
 		res.send('删除成功')
 	})
 })
-//router.post('/search', function(req, res, next) {
-//	res.header('Access-Control-Allow-Origin', "*")
-// 	var sum=req.body.sea;
-// 	con.query(`SELECT * FROM partner WHERE id LIKE '%${sum}%' OR img LIKE '%${sum}%'`,function(err,rows,fields){
-// 		res.send(rows)
-// 	})
-//});
+router.post('/search', function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', "*")
+   	var sum=req.body.sea;
+   	con.query(`SELECT * FROM partner WHERE id LIKE '%${sum}%' OR img LIKE '%${sum}%'`,function(err,rows,fields){
+   		res.send(rows)
+   	})
+});
 
 
 
